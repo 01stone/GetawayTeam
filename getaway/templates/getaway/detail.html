@@ -95,52 +95,31 @@
 
 <!-- 코멘트를 한 번 넣어보자 ---------------------------------------------------------------------------------------------->
                         <div class="container">
-
-                                <h3 style="font-family: SansSerif">댓글</h3>
-{#                                <div>#}
-{#                                    {% comment %}댓글 생성 url {% endcomment %}#}
-{#                                    <form action="" method="post">#}
-{#                                        {% csrf_token %}#}
-{#                                        {% bootstrap_form comment_form %}#}
-{#                                    <label for="c_name">작성자</label>#}
-{#                                    <input type="text"#}
-{#                                           class="form-control"#}
-{#                                           id="c_name"#}
-{#                                           value="{{ post.b_user }}"#}
-{#                                           readonly="readonly">#}
-{#                                    <label for="c_content">내용</label>#}
-{#                                    <input type="text"#}
-{#                                           class="form-control"#}
-{#                                           id="c_content"#}
-{#                                           name="c_content">#}
-{#                                    <br>#}
-{#                                    <input type="submit"#}
-{#                                            class="btn btn-info"#}
-{#                                            id="comment_create_btn"#}
-{#                                            value="등록">#}
-{#                                    </form>#}
-{#                                </div>#}
-                                <table class="table table-hover">
-                                    <thead class="thead-dark">
-                                    <tr>
-                                        <th scope="col">댓글</th>
-                                        <th scope="col">삭제</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="comment_body">
-                                    {% for comment in post.comment_set.all %}
-                                        <tr>
-                                            <td>{{ comment.c_user }}<br>{{ comment.c_content }}</td>
-                                            <td>
-                                                <button type="button"
-                                                        class="btn btn-danger"
-                                                        data-comment_id="{{ comment.id }}"
-                                                        id="comment_delete_btn">삭제</button>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                            <h3 style="font-family: SansSerif">댓글 {{ post.b_voter.count }}</h3>
+<!------------------------------ 답변 등록 : form action link 달아야 함..!  -->
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{ post.id }}" name="c_board">
+                                    <div class="row gtr-uniform">
+                                        <div class="col-6 l" >
+                                            <input type="text" name="c_content">
+                                        </div>
+                                        <div class="col-6 col-12-xsmall">
+                                             <button type="submit" style="font-family: SansSerif">등록</button>
+                                        </div>
+                                    </div>
+                                </form>
+<!------------------------------ 등록된 답변 -->
+{#                                {% for comment in post.comments.all %}#}
+                                    <div class="box">
+                                        {% if request.user == post.b_user %}
+                                            <button type="" class="primary"
+                                                    style="font-family: SansSerif; float: right;">삭제</button>
+                                        {% endif %}
+                                        <h4 style="font-family: SansSerif">(작성자) {{ comment.c_user }}</h4>
+                                        <p> (댓글 내용 : 버튼 위에 if는... 게시글 작성자라서 댓글 작성자로 수정해야 합니다..) {{ comment.c_content }}</p>
+                                    </div>
+{#                                {% endfor %}#}
                         </div>
                         <br><br><br>
                     </div>
